@@ -38,6 +38,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
         // Если фрагмент запускается первый раз, то вызываем инициализацию данных
         if (savedInstanceState == null) {
+            // Вызов первой загрузки
             mStore.accept(Action.Init)
         }
     }
@@ -48,13 +49,16 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
             mSearchQueryFlow.value = text.toString().trim()
         }
         mSearchQueryFlow.debounce(1000).onEachWithViewLifecycle(viewLifecycleOwner) {
+            // Отфильтровать по поисковой строке
             mStore.accept(Action.QueryChanged(it))
         }
         mBinding.filtersButton.setOnClickListener {
+            // Открыть фильтры
             mStore.accept(Action.OpenFilters)
         }
         mBinding.cancelButton.setOnClickListener {
-            mStore.accept(Action.CancelRefresh)
+            // Отменить фильтрацию
+            mStore.accept(Action.CancelFiltering)
         }
     }
 

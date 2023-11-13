@@ -9,7 +9,7 @@ sealed interface Action {
     // Feed
     object Init : Action
     class QueryChanged(val query: String) : Action
-    object CancelRefresh : Action
+    object CancelFiltering : Action
 
     // Filters
     object OpenFilters : Action

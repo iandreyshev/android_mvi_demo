@@ -15,7 +15,7 @@ sealed interface Result {
     data class FinishFirstLoading(val feed: List<Joke>) : Result
     data class QueriedListChanged(val query: String, val list: List<Joke>) : Result
     data class UpdateList(val feed: List<Joke>) : Result
-    object CancelRefresh : Result
+    object CancelFiltering : Result
 
     // Filters
     data class ChangeRefreshingState(val isRefreshing: Boolean) : Result

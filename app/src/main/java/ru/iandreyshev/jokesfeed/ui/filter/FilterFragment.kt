@@ -34,7 +34,10 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun initView() {
-        mBinding.toolbar.setNavigationOnClickListener { mStore.accept(Action.CloseFilters) }
+        mBinding.toolbar.setNavigationOnClickListener {
+            // Закрыть фильтры
+            mStore.accept(Action.CloseFilters)
+        }
 
         Topic.values().forEach {
             val checkbox = CheckBox(requireContext())
@@ -44,17 +47,22 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             checkbox.setOnCheckedChangeListener { _, _ ->
-                mStore.accept(Action.SelectTopics(topics = mBinding.topicsList
+                val selectedTopics = mBinding.topicsList
                     .children
                     .mapIndexedNotNull { i, view ->
                         if ((view as CheckBox).isChecked) Topic.values()[i] else null
                     }
-                    .toSet()))
+                    .toSet()
+                // Выбрать фильтры
+                mStore.accept(Action.SelectTopics(topics = selectedTopics))
             }
             mBinding.topicsList.addView(checkbox)
         }
 
-        mBinding.submitButton.setOnClickListener { mStore.accept(Action.ApplyFilters) }
+        mBinding.submitButton.setOnClickListener {
+            // Начать фильтрацию
+            mStore.accept(Action.ApplyFilters)
+        }
     }
 
     private fun subscribeToStore() {

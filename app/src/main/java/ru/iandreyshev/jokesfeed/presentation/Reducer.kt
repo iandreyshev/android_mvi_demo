@@ -47,7 +47,7 @@ class Reducer : IReducer<Result, State> {
                 feedState = feedState.copy(isRefreshing = result.isRefreshing)
             )
 
-        is Result.CancelRefresh ->
+        is Result.CancelFiltering ->
             copy(
                 feedState = feedState.copy(isRefreshing = false),
                 filterState = filterState.copy(draft = filterState.current)

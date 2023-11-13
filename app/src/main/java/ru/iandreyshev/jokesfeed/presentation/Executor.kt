@@ -23,7 +23,7 @@ class Executor(
         Action.CloseFilters -> reduce(Result.ChangeScreen(State.Screen.FEED))
         is Action.SelectTopics -> onTopicsChanged(action.topics)
         Action.ApplyFilters -> onApplyFilters(getState)
-        Action.CancelRefresh -> onCancelRefresh()
+        Action.CancelFiltering -> onCancelFiltering()
     }
 
     private suspend fun onInitFeed() {
@@ -73,7 +73,7 @@ class Executor(
                     reduce(Result.ApplyFilters(getState().filterState.draft))
                 }
                 is UseCaseResult.Error -> {
-                    reduce(Result.CancelRefresh)
+                    reduce(Result.CancelFiltering)
                     event(Event.ShowMessage("Ошибка загрузки данных"))
                 }
             }
@@ -82,9 +82,9 @@ class Executor(
         }
     }
 
-    private fun onCancelRefresh() {
+    private fun onCancelFiltering() {
         mRefreshOperation?.cancel()
-        reduce(Result.CancelRefresh)
+        reduce(Result.CancelFiltering)
     }
 
 }
