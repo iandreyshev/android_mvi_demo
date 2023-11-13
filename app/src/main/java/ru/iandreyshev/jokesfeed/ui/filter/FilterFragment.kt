@@ -36,7 +36,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     private fun initView() {
         mBinding.toolbar.setNavigationOnClickListener {
             // Закрыть фильтры
-            mStore.accept(Action.CloseFilters)
         }
 
         Topic.values().forEach {
@@ -54,14 +53,12 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
                     }
                     .toSet()
                 // Выбрать фильтры
-                mStore.accept(Action.SelectTopics(topics = selectedTopics))
             }
             mBinding.topicsList.addView(checkbox)
         }
 
         mBinding.submitButton.setOnClickListener {
             // Начать фильтрацию
-            mStore.accept(Action.ApplyFilters)
         }
     }
 
@@ -77,10 +74,6 @@ class FilterFragment : Fragment(R.layout.fragment_filter) {
     }
 
     private fun handleEvent(event: Event) {
-        when (event) {
-            is Event.ShowMessage ->
-                Toast.makeText(requireContext(), event.message, Toast.LENGTH_SHORT).show()
-        }
     }
 
 }
