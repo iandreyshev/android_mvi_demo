@@ -29,7 +29,10 @@ class Executor(
     private suspend fun onInitFeed() {
         when (val result = getFeed(filter = Filter.empty())) {
             is UseCaseResult.Success -> reduce(Result.FinishFirstLoading(feed = result.data))
-            is UseCaseResult.Error -> TODO()
+            is UseCaseResult.Error -> {
+                reduce(Result.FinishFirstLoading(feed = emptyList()))
+                event(Event.ShowMessage("Ошибка загрузки данных"))
+            }
         }
     }
 
@@ -69,7 +72,10 @@ class Executor(
                     reduce(Result.UpdateList(feed = result.data))
                     reduce(Result.ApplyFilters(getState().filterState.draft))
                 }
-                is UseCaseResult.Error -> TODO()
+                is UseCaseResult.Error -> {
+                    reduce(Result.CancelRefresh)
+                    event(Event.ShowMessage("Ошибка загрузки данных"))
+                }
             }
 
             reduce(Result.ChangeRefreshingState(isRefreshing = false))

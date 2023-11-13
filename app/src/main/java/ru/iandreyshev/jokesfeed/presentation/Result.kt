@@ -4,6 +4,9 @@ import ru.iandreyshev.jokesfeed.domain.Filter
 import ru.iandreyshev.jokesfeed.domain.Joke
 import ru.iandreyshev.jokesfeed.domain.Topic
 
+/**
+ * Данные для модификации стейта в слое бизнес-логики
+ * */
 sealed interface Result {
     // Main
     data class ChangeScreen(val screen: State.Screen) : Result

@@ -42,12 +42,10 @@ data class FeedState(
     val filter: Filter,
     val isRefreshing: Boolean
 ) {
-
     enum class Type {
         FIRST_LOADING,
         NORMAL;
     }
-
 }
 
 data class FilterState(

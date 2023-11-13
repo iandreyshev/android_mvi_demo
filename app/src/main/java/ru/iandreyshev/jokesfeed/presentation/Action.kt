@@ -2,6 +2,9 @@ package ru.iandreyshev.jokesfeed.presentation
 
 import ru.iandreyshev.jokesfeed.domain.Topic
 
+/**
+ * Действия из слоя интерфейса (ввод пользователя)
+ * */
 sealed interface Action {
     // Feed
     object Init : Action
