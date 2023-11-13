@@ -4,13 +4,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import ru.iandreyshev.jokesfeed.domain.Filter
 import ru.iandreyshev.jokesfeed.domain.Topic
-import ru.iandreyshev.jokesfeed.domain.feed.GetFeedUseCase
+import ru.iandreyshev.jokesfeed.domain.feed.GetJokesUseCase
 import ru.iandreyshev.jokesfeed.domain.core.UseCaseResult
 import ru.iandreyshev.jokesfeed.domain.feed.FilterJokesByQueryUseCase
 import ru.iandreyshev.jokesfeed.system.mvi.Executor
 
 class Executor(
-    private val getFeed: GetFeedUseCase,
+    private val getFeed: GetJokesUseCase,
     private val filterJokesByQuery: FilterJokesByQueryUseCase
 ) : Executor<Action, Event, State, Result>() {
 
