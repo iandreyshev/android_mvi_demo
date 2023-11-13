@@ -8,12 +8,12 @@ import ru.iandreyshev.jokesfeed.domain.Topic
 sealed interface Action {
     // Feed
     object Init : Action
-    class QueryChanged(val query: String) : Action
-    object CancelFiltering : Action
+    data class QueryChanged(val query: String) : Action
 
     // Filters
     object OpenFilters : Action
+    object CloseFilters : Action
     data class SelectTopics(val topics: Set<Topic>) : Action
     object ApplyFilters : Action
-    object CloseFilters : Action
+    object CancelFiltering : Action
 }

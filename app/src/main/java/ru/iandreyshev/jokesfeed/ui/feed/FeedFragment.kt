@@ -80,8 +80,8 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
     private fun renderList(feedState: FeedState) {
         val listItems = when {
-            feedState.query.isBlank() -> feedState.feed
-            else -> feedState.queriedFeed
+            feedState.query.isBlank() -> feedState.jokes
+            else -> feedState.filteredByQueryJokes
         }
         mBinding.listView.isVisible = listItems.isNotEmpty()
         mBinding.emptyText.isVisible = listItems.isEmpty()
@@ -111,7 +111,7 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
     }
 
     private fun renderRefreshCard(feedState: FeedState) {
-        mBinding.refreshCard.isVisible = feedState.isRefreshing
+        mBinding.refreshCard.isVisible = feedState.isFilteringInProgress
     }
 
 }

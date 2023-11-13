@@ -6,22 +6,22 @@ import ru.iandreyshev.jokesfeed.domain.Filter
 import ru.iandreyshev.jokesfeed.domain.Topic
 import ru.iandreyshev.jokesfeed.domain.feed.GetFeedUseCase
 import ru.iandreyshev.jokesfeed.domain.core.UseCaseResult
-import ru.iandreyshev.jokesfeed.domain.feed.FilterItemsByQueryUseCase
+import ru.iandreyshev.jokesfeed.domain.feed.FilterJokesByQueryUseCase
 import ru.iandreyshev.jokesfeed.system.mvi.Executor
 
 class Executor(
     private val getFeed: GetFeedUseCase,
-    private val filterItemsByQuery: FilterItemsByQueryUseCase
+    private val filterJokesByQuery: FilterJokesByQueryUseCase
 ) : Executor<Action, Event, State, Result>() {
 
-    private var mRefreshOperation: Job? = null
+    private var mFilteringJob: Job? = null
 
     override suspend fun execute(action: Action, getState: () -> State) = when (action) {
         Action.Init -> onInitFeed()
         is Action.QueryChanged -> onQueryChanged(getState, action.query)
         Action.OpenFilters -> onOpenFilters(getState)
         Action.CloseFilters -> reduce(Result.ChangeScreen(State.Screen.FEED))
-        is Action.SelectTopics -> onTopicsChanged(action.topics)
+        is Action.SelectTopics -> onTopicsSelected(action.topics)
         Action.ApplyFilters -> onApplyFilters(getState)
         Action.CancelFiltering -> onCancelFiltering()
     }
@@ -36,24 +36,24 @@ class Executor(
         }
     }
 
-    private fun onQueryChanged(getState: () -> State, newQuery: String) {
+    private fun onQueryChanged(getState: () -> State, query: String) {
         when {
-            newQuery.isBlank() -> reduce(Result.QueriedListChanged("", emptyList()))
+            query.isBlank() -> reduce(Result.QueriedListChanged("", emptyList()))
             else -> {
-                val filteredItems = filterItemsByQuery(getState().feedState.feed, query = newQuery)
-                reduce(Result.QueriedListChanged(newQuery, filteredItems))
+                val filtered = filterJokesByQuery(getState().feedState.jokes, query = query)
+                reduce(Result.QueriedListChanged(query, filtered))
             }
         }
     }
 
     private fun onOpenFilters(getState: () -> State) {
-        if (!getState().feedState.isRefreshing) {
+        if (!getState().feedState.isFilteringInProgress) {
             reduce(Result.ChangeScreen(State.Screen.FILTER))
         }
     }
 
-    private fun onTopicsChanged(topics: Set<Topic>) {
-        reduce(Result.ChangeTopics(topics))
+    private fun onTopicsSelected(topics: Set<Topic>) {
+        reduce(Result.SelectTopics(topics))
     }
 
     private suspend fun onApplyFilters(getState: () -> State) {
@@ -64,7 +64,7 @@ class Executor(
 
         reduce(Result.ChangeRefreshingState(isRefreshing = true))
 
-        mRefreshOperation = coroutineScope?.launch {
+        mFilteringJob = coroutineScope?.launch {
             reduce(Result.ChangeScreen(State.Screen.FEED))
 
             when (val result = getFeed(filter = getState().filterState.draft)) {
@@ -83,7 +83,7 @@ class Executor(
     }
 
     private fun onCancelFiltering() {
-        mRefreshOperation?.cancel()
+        mFilteringJob?.cancel()
         reduce(Result.CancelFiltering)
     }
 

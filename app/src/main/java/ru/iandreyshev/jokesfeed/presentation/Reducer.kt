@@ -9,7 +9,7 @@ class Reducer : IReducer<Result, State> {
             copy(
                 feedState = feedState.copy(
                     type = FeedState.Type.NORMAL,
-                    feed = result.feed
+                    jokes = result.feed
                 )
             )
 
@@ -17,19 +17,19 @@ class Reducer : IReducer<Result, State> {
             copy(
                 feedState = feedState.copy(
                     query = result.query,
-                    queriedFeed = result.list
+                    filteredByQueryJokes = result.list
                 )
             )
 
         is Result.UpdateList ->
             copy(
-                feedState = feedState.copy(feed = result.feed)
+                feedState = feedState.copy(jokes = result.feed)
             )
 
         is Result.ChangeScreen ->
             copy(screen = result.screen)
 
-        is Result.ChangeTopics ->
+        is Result.SelectTopics ->
             copy(
                 filterState = filterState.copy(
                     draft = filterState.draft.copy(topics = result.topics)
@@ -44,12 +44,12 @@ class Reducer : IReducer<Result, State> {
 
         is Result.ChangeRefreshingState ->
             copy(
-                feedState = feedState.copy(isRefreshing = result.isRefreshing)
+                feedState = feedState.copy(isFilteringInProgress = result.isRefreshing)
             )
 
         is Result.CancelFiltering ->
             copy(
-                feedState = feedState.copy(isRefreshing = false),
+                feedState = feedState.copy(isFilteringInProgress = false),
                 filterState = filterState.copy(draft = filterState.current)
             )
     }

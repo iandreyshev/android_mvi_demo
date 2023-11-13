@@ -1,15 +1,14 @@
 package ru.iandreyshev.jokesfeed.data
 
 import kotlinx.coroutines.delay
-import ru.iandreyshev.jokesfeed.domain.feed.FeedGateway
+import ru.iandreyshev.jokesfeed.domain.feed.Gateway
 import ru.iandreyshev.jokesfeed.domain.Joke
 import ru.iandreyshev.jokesfeed.domain.Filter
 import ru.iandreyshev.jokesfeed.domain.Topic
-import java.util.Date
 
 private const val DELAY_MS = 1500L
 
-class FakeRemoteFeedGateway : FeedGateway {
+class FakeRemoteGateway : Gateway {
 
     override suspend fun get(filter: Filter): List<Joke> {
         delay(DELAY_MS)

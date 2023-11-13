@@ -19,6 +19,6 @@ sealed interface Result {
 
     // Filters
     data class ChangeRefreshingState(val isRefreshing: Boolean) : Result
-    data class ChangeTopics(val topics: Set<Topic>) : Result
+    data class SelectTopics(val topics: Set<Topic>) : Result
     data class ApplyFilters(val filter: Filter) : Result
 }

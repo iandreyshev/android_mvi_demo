@@ -12,7 +12,7 @@ import ru.iandreyshev.jokesfeed.system.utils.CoroutineContextProvider
 private const val DELAY = 4000L
 
 class GetFeedUseCase(
-    private val gateway: FeedGateway,
+    private val gateway: Gateway,
     private val contextProvider: CoroutineContextProvider
 ) {
 

@@ -19,11 +19,11 @@ data class State(
             screen = Screen.FEED,
             feedState = FeedState(
                 type = FeedState.Type.FIRST_LOADING,
-                feed = emptyList(),
+                jokes = emptyList(),
                 query = "",
-                queriedFeed = emptyList(),
+                filteredByQueryJokes = emptyList(),
                 filter = Filter.empty(),
-                isRefreshing = false,
+                isFilteringInProgress = false,
             ),
             filterState = FilterState(
                 current = Filter.empty(),
@@ -36,11 +36,11 @@ data class State(
 
 data class FeedState(
     val type: Type,
-    val feed: List<Joke>,
+    val jokes: List<Joke>,
     val query: String,
-    val queriedFeed: List<Joke>,
+    val filteredByQueryJokes: List<Joke>,
     val filter: Filter,
-    val isRefreshing: Boolean
+    val isFilteringInProgress: Boolean
 ) {
     enum class Type {
         FIRST_LOADING,
